@@ -1,0 +1,33 @@
+[workspace]
+authors = ["tomastmk <tomasamadio@gmail.com>"]
+channels = ["conda-forge","bioconda"]
+name = "New"
+platforms = ["linux-64"]
+version = "0.1.0"
+
+[tasks]
+
+[dependencies]
+nvim = ">=0.12.3,<0.13"
+python = ">=3.13,<3.14"
+r-base = ">=4.6.0,<4.7"
+yazi = ">=26.5.6,<27"
+biopython = ">=1.87,<2"
+pyrodigal = ">=3.7.1,<4"
+diamond = ">=2.2.2,<3"
+polars = ">=1.42.1,<2"
+xdg = ">=6.0.0,<7"
+igraph = ">=1.0.1,<2"
+leidenalg = ">=0.12.0,<0.13"
+tqdm = ">=4.68.4,<5"
+macsyfinder = ">=2.1.6,<3"
+csvlens = ">=0.15.1,<0.16"
+seqkit = ">=2.13.0,<3"
+emboss = ">=6.6.0,<7"
+jalview = ">=2.11.5.1,<3"
+mafft = ">=7.526,<8"
+alv = ">=1.8.3,<2"
+aliview = ">=1.32,<2"
+datasets = ">=5.0.1,<6"
+ncbi-datasets-cli = ">=18.34.0,<19"
+entrez-direct = ">=26.0,<27"
