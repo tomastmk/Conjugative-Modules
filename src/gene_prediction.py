@@ -24,9 +24,31 @@ def main():
         parser.print_help(sys.stderr)
         sys.exit(1)
 
+    input_path: str = args.i
+    output_dir: str = args.o
 
-    translate_genes(args.i, args.o)
+    data_iterator: SeqIO.FastaIO.FastaIterator = SeqIO.parse(input_path, "fasta")
 
+    with (
+        ThreadPool() as pool,
+        open(output_dir + "/pred_genes.faa", "w", encoding="utf-8") as transcription_file,
+        open(output_dir + "/pred_proteins.faa", "w", encoding="utf-8") as translation_file,
+        open(output_dir + "/gene_count.tsv", "w", encoding="utf8") as cont_file,
+    ):
+        sequences = pool.imap(predict_genes, data_iterator)
+        for i, sequence in enumerate(sequences):
+            
+            sequence[1].write_gff(
+                transcription_file, sequence[0], include_translation_table=True 
+            )
+            #sequence[1].write_genes(
+            #    transcription_file, sequence[0] 
+            #)
+            #sequence[1].write_translations(
+            #    translation_file, sequence[0], include_stop=False
+            #)
+            cont_file.write(f"{sequence[0]} {len(sequence[1])}\n")
+            print(f"Sequências lidas: {i:02d}\r")
 
 def predict_genes(genome_sequence: SeqRecord.SeqRecord) -> tuple[str, str]:
     """Função que recebe uma sequência e retorna uma tupla, contendo o id e uma lista com todos genes.
@@ -46,43 +68,6 @@ def predict_genes(genome_sequence: SeqRecord.SeqRecord) -> tuple[str, str]:
     )
 
 
-def translate_genes(input_path: str, output_dir: str) -> None:
-    """Função que recebe um fasta múltiplo e o processa em paralelo. Preve genes e os traduz.
-    Escreve um arquivo tsv com a contagem de genes de cada replicon e um fasta com todas proteínas
-    previstas.
-
-    Parameters
-    ----------
-    input_path : str
-        input_path
-    output_cont_path : str
-        output_cont_path
-    output_translation_path : str
-        output_translation_path
-
-    Returns
-    -------
-    None
-
-    """
-    # Extracting id and genes from BioPython FastaIterator
-
-    # Extracting sequences from Fasta
-    # Outputing a file with the translations and a file with count of genes
-    data_iterator: SeqIO.FastaIO.FastaIterator = SeqIO.parse(input_path, "fasta")
-
-    with (
-        ThreadPool() as pool,
-        open(output_dir + "/pred_proteins.faa", "w", encoding="utf-8") as translation_file,
-        open(output_dir + "/gene_count.tsv", "w", encoding="utf8") as cont_file,
-    ):
-        sequences = pool.imap(predict_genes, data_iterator)
-        for i, sequence in enumerate(sequences):
-            sequence[1].write_translations(
-                translation_file, sequence[0], include_stop=False
-            )
-            cont_file.write(f"{sequence[0]} {len(sequence[1])}\n")
-            print(f"Sequências lidas: {i:02d}\r")
 
 
 if __name__ == "__main__":

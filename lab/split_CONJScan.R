@@ -1,3 +1,7 @@
+#
+# Script para separar CONJScan em MOB de T4SS
+#
+
 library(data.table)
 library(stringr)
 

@@ -1,3 +1,6 @@
+#
+# Script para achar o cutoff (cotovelo)
+#
 
 getwd()
 

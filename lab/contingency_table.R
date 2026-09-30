@@ -1,3 +1,7 @@
+#
+# Script para construir tabelas de contingência para cada cluster (alpha)
+#
+
 library(Matrix)
 
 

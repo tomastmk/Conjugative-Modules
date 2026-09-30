@@ -1,3 +1,7 @@
+#
+# Script for running fisher's test
+#
+
 library(data.table)
 library(tidyr)
 
